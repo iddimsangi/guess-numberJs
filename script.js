@@ -4,38 +4,48 @@ let HighScore = 0;
 let secretNumber = Math.trunc(Math.random() * 20 + 1);
 console.log(secretNumber);
 
+const messageContent = message =>
+  (document.querySelector('.message').textContent = message);
+const scoreContent = score =>
+  (document.querySelector('.score').textContent = score);
+const numberContent = number =>
+  (document.querySelector('.number').textContent = number);
+const bodyContent = color =>
+  (document.querySelector('body').style.backgroundColor = color);
 document.querySelector('.again').addEventListener('click', function () {
-  document.querySelector('.message').textContent = 'Start guessing...';
-  HighScore = HighScore + score;
-  document.querySelector('.highscore').textContent = HighScore;
+  messageContent('Start guessing...');
   score = 20;
-  document.querySelector('.score').textContent = score;
-  document.querySelector('body').style.backgroundColor = '#000';
-  document.querySelector('.number').textContent = '?';
+  scoreContent(score);
+  bodyContent('#000');
+  numberContent('?');
   document.querySelector('.guess').value = '';
+  secretNumber = Math.trunc(Math.random() * 20 + 1);
+  console.log(secretNumber);
 });
 
 document.querySelector('.check').addEventListener('click', function () {
   const inValue = Number(document.querySelector('.guess').value);
-  //   console.log(inValue, typeof inValue);
 
   if (inValue) {
     if (inValue > secretNumber) {
-      document.querySelector('.message').textContent = 'Too High guessing';
+      messageContent('Too High guessing');
       score = score - 1;
-      document.querySelector('.score').textContent = score;
+      scoreContent(score);
     } else if (inValue < secretNumber) {
-      document.querySelector('.message').textContent = 'Too low guessing';
+      messageContent('Too low guessing');
       score--;
-      document.querySelector('.score').textContent = score;
+      scoreContent(score);
     } else if (inValue == secretNumber) {
-      document.querySelector('.message').textContent = 'Congratulations!!';
-      document.querySelector('.number').textContent = secretNumber;
+      messageContent('Congratulations!!');
+      numberContent(secretNumber);
       score++;
-      document.querySelector('.score').textContent = score;
-      document.querySelector('body').style.backgroundColor = 'green';
+      scoreContent(score);
+
+      document.querySelector('.highscore').textContent =
+        score > HighScore ? (HighScore = score) : HighScore;
+      bodyContent('green');
     }
   } else {
-    document.querySelector('.message').textContent = 'ENTER NUMBER PLEASE';
+    messageContent('ENTER NUMBER PLEASE');
   }
 });
